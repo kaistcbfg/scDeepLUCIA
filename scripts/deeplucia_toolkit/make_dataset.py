@@ -12,8 +12,7 @@ import numpy
 ################################################################################
 
 def gen_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type , genome_version):
-	#feature_dir = Path("/tmp/temp_feature/")
-	feature_dir = Path("/work/dy109/scDeepLUCIA-v2/current/deeplucia_train/feature")
+	feature_dir = Path("/tmp/temp_feature/")
 	chrom_sample_list = load_dataset_config(config_filename)
 
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
@@ -33,8 +32,7 @@ def gen_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type , gen
 
 
 def sample_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type, genome_version , sampling_count):
-	#feature_dir = Path("/tmp/temp_feature/")
-	feature_dir = Path("/work/dy109/scDeepLUCIA-v2/current/deeplucia_train/feature")
+	feature_dir = Path("/tmp/temp_feature/")
 	chrom_sample_list = load_dataset_config(config_filename)
 
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
@@ -52,8 +50,7 @@ def sample_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type, g
 
 
 def gen_nonrepeat_seq_epi_con_dataset(config_filename, n2p, marker_type,metric_type, genome_version):
-	#feature_dir = Path("/tmp/temp_feature/")
-	feature_dir = Path("/work/dy109/scDeepLUCIA-v2/current/deeplucia_train/feature")
+	feature_dir = Path("/tmp/temp_feature/")
 	chrom_sample_list = load_dataset_config(config_filename)
 
 
