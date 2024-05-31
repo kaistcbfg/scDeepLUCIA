@@ -21,7 +21,8 @@ identify chromatin loops from single cell HiCAR dataset.
 - scikit-learn>=1.4.2 ( tested with 1.4.2 )
 
 ## Container
-- Tested with [Amazon sagemaker distribution](https://gallery.ecr.aws/sagemaker/sagemaker-distribution) 1.8.0-gpu ( public.ecr.aws/sagemaker/sagemaker-distribution:1.8.0-gpu ).
+- Tested with [Amazon SageMaker Distribution](https://gallery.ecr.aws/sagemaker/sagemaker-distribution) 1.8.0-gpu ( public.ecr.aws/sagemaker/sagemaker-distribution:1.8.0-gpu ).
+- Tested with [Amazon SageMaker Studio Lab](https://studiolab.sagemaker.aws/) which usesi SageMaker Distribution 1.7.0-gpu.
 - [Dockerfile](container/Dockerfile) is perpared for Docker.
 - [Singularity.ref](container/Singularity.def) is prepared for Singularity.
 
