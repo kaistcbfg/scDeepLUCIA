@@ -21,7 +21,9 @@ identify chromatin loops from single cell HiCAR dataset.
 - scikit-learn>=1.4.2 ( tested with 1.4.2 )
 
 ## Container
-- Tested with Amazon sagemaker distribution 1.8.0-gpu.
+- Tested with [Amazon sagemaker distribution](https://gallery.ecr.aws/sagemaker/sagemaker-distribution) 1.8.0-gpu ( public.ecr.aws/sagemaker/sagemaker-distribution:1.8.0-gpu ).
+- [Dockerfile](container/Dockerfile) is perpared for Docker.
+- [Singularity.ref](container/Singularity.def) is prepared for Singularity.
 
 ## Hardware recommendation 
 - NVIDIA GPU with Compute Capability >= 7.5
@@ -33,5 +35,9 @@ git clone https://github.com/kaistcbfg/scDeepLUCIA.git
 
 ## Example 
 - [jupyter notebook for the astrocyte chr10](scDeepLUCIA.ipynb)
+
+
+
+
 
 
