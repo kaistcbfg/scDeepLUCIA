@@ -32,6 +32,6 @@ git clone https://github.com/kaistcbfg/scDeepLUCIA.git
 ```
 
 ## Example 
-- [jupyter notebook for the astrocyte chr10](scDeepLUCIA_demo.ipynb)
+- [jupyter notebook for the astrocyte chr10](scDeepLUCIA.ipynb)
 
 

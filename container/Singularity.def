@@ -1,0 +1,9 @@
+BootStrap: docker
+From: nvcr.io/nvidia/tensorflow:24.01-tf2-py3
+%runscript
+     exec /usr/bin/python "$@"
+
+%post
+     pip install pandas==2.1.4
+     pip install scikit-learn==1.4.2
+     pip install jupyterlab nbformat
