@@ -23,7 +23,8 @@ def get_directory(feature_dirname,chrom,sample,genome_version):
     feature_dir = Path(feature_dirname)
     seq_array_dirname = feature_dir / "sliced_seq_array" / genome_version / "isHC"
     epi_array_dirname = feature_dir / "sliced_epi_array" / genome_version
-    return seq_array_dirname,epi_array_dirname
+    con_array_dirname = feature_dir / "sliced_con_array" / genome_version
+    return seq_array_dirname,epi_array_dirname,con_array_dirname
 
 
 def get_con_cutoff(con_array,con_rev_quantile=0.005):

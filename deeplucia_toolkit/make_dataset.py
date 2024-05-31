@@ -18,10 +18,12 @@ def gen_seq_epi_dataset(feature_dirname,config_filename, n2p, marker_type , geno
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
 	seq_array_dirname = feature_dir / "sliced_seq_array" / genome_version / "isHC"
 	epi_array_dirname = feature_dir / "sliced_epi_array" / genome_version
+	con_array_dirname = feature_dir / "sliced_con_array" / genome_version
+
 
 	chrom_to_seq_array = load_seq_array_dir(chrom_sample_list, seq_array_dirname)
 	chrom_sample_to_epi_array = load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname)
-
+	chrom_sample_to_con_array = load_con_array_dir(chrom_sample_list ,con_array_dirname)
 	rated_loop_candidate_gen = gen_rated_loop_candidate(chrom_sample_list,n2p,loop_status_dirname)
 
 	for _,chunk in itertools.groupby(enumerate(rated_loop_candidate_gen) , lambda x : x[0]//200):
@@ -105,6 +107,18 @@ def load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname):
 		chrom_sample_to_epi_array[chrom_sample] = epi_array
 
 	return chrom_sample_to_epi_array
+
+
+def load_con_array_dir(chrom_sample_list ,con_array_dirname,contact_type=contact_030M):
+	chrom_sample_to_epi_array = {}
+	for chrom_sample in chrom_sample_list:
+		chrom,sample = chrom_sample
+		con_array_base_filename = contact_type + "." + chrom + ".npy"
+		con_array_filename = con_array_dirname / sample / con_array_base_filename
+		con_array = numpy.load(con_array_filename,mmap_mode="r")
+		chrom_sample_to_con_array[chrom_sample] = con_array
+
+	return chrom_sample_to_con_array
 
 
 ################################################################################
