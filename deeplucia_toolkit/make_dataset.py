@@ -11,63 +11,57 @@ import numpy
 # frontest-end for data feeding 
 ################################################################################
 
-def gen_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type , genome_version):
-	feature_dir = Path("/tmp/temp_feature/")
+def gen_seq_epi_dataset(feature_dirname,config_filename, n2p, marker_type , genome_version):
+	feature_dir = Path(feature_dirname)
 	chrom_sample_list = load_dataset_config(config_filename)
 
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
 	seq_array_dirname = feature_dir / "sliced_seq_array" / genome_version / "isHC"
 	epi_array_dirname = feature_dir / "sliced_epi_array" / genome_version
-	con_array_dirname = feature_dir / "sliced_con_array" / genome_version
 
 	chrom_to_seq_array = load_seq_array_dir(chrom_sample_list, seq_array_dirname)
 	chrom_sample_to_epi_array = load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname)
-	chrom_sample_to_con_array = load_con_array_dir(chrom_sample_list , metric_type , con_array_dirname)
 
 	rated_loop_candidate_gen = gen_rated_loop_candidate(chrom_sample_list,n2p,loop_status_dirname)
 
 	for _,chunk in itertools.groupby(enumerate(rated_loop_candidate_gen) , lambda x : x[0]//200):
 		loop_candidate_list = [loop_candidate for i,loop_candidate in chunk]
-		yield extract_seq_epi_con_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array, chrom_sample_to_con_array)
+		yield extract_seq_epi_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array)
 
 
-def sample_seq_epi_con_dataset(config_filename, n2p, marker_type ,metric_type, genome_version , sampling_count):
-	feature_dir = Path("/tmp/temp_feature/")
+def sample_seq_epi_dataset(feature_dirname,config_filename, n2p, marker_type , genome_version , sampling_count):
+	feature_dir = Path(feature_dirname)
 	chrom_sample_list = load_dataset_config(config_filename)
 
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
 	seq_array_dirname = feature_dir / "sliced_seq_array" / genome_version / "isHC"
 	epi_array_dirname = feature_dir / "sliced_epi_array" / genome_version
-	con_array_dirname = feature_dir / "sliced_con_array" / genome_version
 
 	chrom_to_seq_array = load_seq_array_dir(chrom_sample_list, seq_array_dirname)
 	chrom_sample_to_epi_array = load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname)
-	chrom_sample_to_con_array = load_con_array_dir(chrom_sample_list , metric_type , con_array_dirname)
 
 	sample_rated_loop_candidate_list = load_sample_rated_loop_candidate(chrom_sample_list,n2p,loop_status_dirname,sampling_count)
 
-	return extract_seq_epi_con_dataset(sample_rated_loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array, chrom_sample_to_con_array)
+	return extract_seq_epi_dataset(sample_rated_loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array)
 
 
-def gen_nonrepeat_seq_epi_con_dataset(config_filename, n2p, marker_type,metric_type, genome_version):
-	feature_dir = Path("/tmp/temp_feature/")
+def gen_nonrepeat_seq_epi_dataset(feature_dirname,config_filename, n2p, marker_type, genome_version):
+	feature_dir = Path(feature_dirname)
 	chrom_sample_list = load_dataset_config(config_filename)
 
 
 	loop_status_dirname = feature_dir / "loop_control" / genome_version
 	seq_array_dirname = feature_dir / "sliced_seq_array" / genome_version / "isHC"
 	epi_array_dirname = feature_dir / "sliced_epi_array" / genome_version
-	con_array_dirname = feature_dir / "sliced_con_array" / genome_version
 
 	chrom_to_seq_array = load_seq_array_dir(chrom_sample_list, seq_array_dirname)
 	chrom_sample_to_epi_array = load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname)
-	chrom_sample_to_con_array = load_con_array_dir(chrom_sample_list , metric_type , con_array_dirname)
 
 	nonrepeat_rated_loop_candidate_gen = gen_nonrepeat_rated_loop_candidate(chrom_sample_list , n2p , loop_status_dirname)
 
 	for _,chunk in itertools.groupby(enumerate(nonrepeat_rated_loop_candidate_gen) , lambda x : x[0]//1000):
 		loop_candidate_list = [loop_candidate for i,loop_candidate in chunk]
-		yield extract_seq_epi_con_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array, chrom_sample_to_con_array)
+		yield extract_seq_epi_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array)
 
 
 
@@ -113,19 +107,6 @@ def load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname):
 	return chrom_sample_to_epi_array
 
 
-def load_con_array_dir(chrom_sample_list , metric_type , con_array_dirname):
-	chrom_sample_to_con_array = {}
-	for chrom_sample in chrom_sample_list:
-		chrom,sample = chrom_sample
-		con_array_base_filename = metric_type + "." + chrom + ".npy"
-		con_array_filename = con_array_dirname / sample / con_array_base_filename
-		con_array = numpy.load(con_array_filename,mmap_mode="r")
-		chrom_sample_to_con_array[chrom_sample] = con_array
-
-	return chrom_sample_to_con_array
-
-
-
 ################################################################################
 # make infinite/finite numbers of loops 
 ################################################################################
@@ -164,24 +145,22 @@ def gen_scanning_loop_candidate(chrom,sample,scan_start,scan_end):
 
 
 ################################################################################
-# extract seq,epi,con feature for given candidates.
+# extract seq,epi feature for given candidates.
 ################################################################################
 
-def extract_seq_epi_con_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array, chrom_sample_to_con_array):
+def extract_seq_epi_dataset(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array):
 	numpy.random.shuffle(loop_candidate_list)
 	label = numpy.asarray([ loop_candidate[3] for loop_candidate in loop_candidate_list ])
 	seq_feature_one,seq_feature_two = take_seq_array(chrom_to_seq_array,loop_candidate_list)
 	epi_feature_one,epi_feature_two = take_epi_array(chrom_sample_to_epi_array,loop_candidate_list)
-	con_feature = take_con_array(chrom_sample_to_con_array,loop_candidate_list)
-	return ((seq_feature_one,seq_feature_two,epi_feature_one,epi_feature_two,con_feature),label)
+	return ((seq_feature_one,seq_feature_two,epi_feature_one,epi_feature_two),label)
 
 
-def extract_seq_epi_con_dataset_nonshuffle(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array, chrom_sample_to_con_array):
+def extract_seq_epi_dataset_nonshuffle(loop_candidate_list, chrom_to_seq_array, chrom_sample_to_epi_array):
 	label = numpy.asarray([ loop_candidate[3] for loop_candidate in loop_candidate_list ])
 	seq_feature_one,seq_feature_two = take_seq_array(chrom_to_seq_array,loop_candidate_list)
 	epi_feature_one,epi_feature_two = take_epi_array(chrom_sample_to_epi_array,loop_candidate_list)
-	con_feature = take_con_array(chrom_sample_to_con_array,loop_candidate_list)
-	return ((seq_feature_one,seq_feature_two,epi_feature_one,epi_feature_two,con_feature),label)
+	return ((seq_feature_one,seq_feature_two,epi_feature_one,epi_feature_two),label)
 
 
 
@@ -257,18 +236,3 @@ def take_epi_array(chrom_sample_to_epi_array,loop_candidate_list):
 	epi_feature_one = numpy.stack(epi_feature_array_one_list,axis=0)
 	epi_feature_two = numpy.stack(epi_feature_array_two_list,axis=0)
 	return epi_feature_one,epi_feature_two
-
-
-def take_con_array(chrom_sample_to_con_array,loop_candidate_list):
-	con_feature_value_list = []
-
-	for loop_candidate in loop_candidate_list:
-		chrom = loop_candidate[0]
-		sample = loop_candidate[1]
-		chrom_sample = (chrom,sample)
-		index_pair = loop_candidate[2]
-		con_feature_value = chrom_sample_to_con_array[chrom_sample][index_pair]
-		con_feature_value_list.append(con_feature_value)
-
-	con_feature = numpy.array(con_feature_value_list).reshape(-1,1)
-	return con_feature
