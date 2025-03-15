@@ -91,7 +91,7 @@ def load_seq_array_dir(chrom_sample_list, seq_array_dirname):
 	for chrom,_ in chrom_sample_list : 
 		seq_array_base_filename = "isHC.seq_onehot." + chrom + ".npy"
 		seq_array_filename =  seq_array_dirname / seq_array_base_filename
-		seq_array = numpy.load(seq_array_filename,mmap_mode="r")
+		seq_array = numpy.load(seq_array_filename,mmap_mode="r",allow_pickle=True)
 		chrom_to_seq_array[chrom] = seq_array
 
 	return chrom_to_seq_array
@@ -103,19 +103,19 @@ def load_epi_array_dir(chrom_sample_list , marker_type , epi_array_dirname):
 		chrom,sample = chrom_sample
 		epi_array_base_filename = marker_type + "." + chrom + ".npy"
 		epi_array_filename = epi_array_dirname / sample / epi_array_base_filename
-		epi_array = numpy.load(epi_array_filename,mmap_mode="r")
+		epi_array = numpy.load(epi_array_filename,mmap_mode="r",allow_pickle=True)
 		chrom_sample_to_epi_array[chrom_sample] = epi_array
 
 	return chrom_sample_to_epi_array
 
 
-def load_con_array_dir(chrom_sample_list ,con_array_dirname,contact_type=contact_030M):
-	chrom_sample_to_epi_array = {}
+def load_con_array_dir(chrom_sample_list ,con_array_dirname,contact_type="contact_030M"):
+	chrom_sample_to_con_array = {}
 	for chrom_sample in chrom_sample_list:
 		chrom,sample = chrom_sample
 		con_array_base_filename = contact_type + "." + chrom + ".npy"
 		con_array_filename = con_array_dirname / sample / con_array_base_filename
-		con_array = numpy.load(con_array_filename,mmap_mode="r")
+		con_array = numpy.load(con_array_filename,mmap_mode="r",allow_pickle=True)
 		chrom_sample_to_con_array[chrom_sample] = con_array
 
 	return chrom_sample_to_con_array
