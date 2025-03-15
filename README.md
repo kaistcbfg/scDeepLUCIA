@@ -16,7 +16,7 @@ identify chromatin loops from single cell HiCAR dataset.
 - identified chromatin loops in bedpe format
 
 ## Dependencies
-- tensorflow>=2.14.0 ( tested with 2.14.0 )
+- tensorflow=2.14.0 ( tested with 2.14.0 )
 - pandas>=2.1.4 ( tested with 2.1.4 ) 
 - scikit-learn>=1.4.2 ( tested with 1.4.2 )
 
