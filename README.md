@@ -32,6 +32,8 @@ identify chromatin loops from single cell HiCAR dataset.
 ## Installation guide
 ```
 git clone https://github.com/kaistcbfg/scDeepLUCIA.git
+cd scDeepLUCIA
+bash prepare_feature.sh
 ```
 
 ## Example 
